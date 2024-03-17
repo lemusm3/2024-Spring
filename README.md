@@ -1,3 +1,5 @@
 # 2024-Spring
-# Marco Lemus 
-#
+## The best class at New Paltz
+
+### Todo
+ - Create another repo
