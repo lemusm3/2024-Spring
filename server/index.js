@@ -9,7 +9,7 @@ const PORT = 3000;
 app.get('/', (req, res) => {
   res.send('Hello New Paltz!')
 })
-.use('/users', users)
+.use('/api/vl/users', users)
 
 
 app.listen(PORT, () => {
