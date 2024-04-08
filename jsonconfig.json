@@ -1,5 +1,6 @@
 {
-    "compositions":{
-        "checkjs": true
+    "compilerOptions": {
+        "checkJs": true,
+        "resolveJsonModule": true
     }
 }
