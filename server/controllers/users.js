@@ -55,7 +55,9 @@ app
     })
     .post('/', (req, res, next) => {
         const user = req.body;
+        console.log("1: About to add user");
         const result = users.add(user);
+        console.log("5: Returned from add user");
 
         /** @type { UserDataEnvelope } */
         const response = {

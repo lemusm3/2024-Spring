@@ -54,13 +54,18 @@ function search(q) {
  * @param {User} user
  * @returns {User}
  * */
-function add(user) {
+async function add(user) {
     user.id = data.items.length + 1;
     data.items.push(user);
     console.log("2: About to save");
-    save()
-    .then(() => console.log("3: Saved"))
-    .catch(console.error);
+    
+    try {
+        await save()
+        console.log("3: Saved")
+    } catch (error) {
+       console.error(error);
+    }
+
     console.log("4: About to return user");
     return user;
 }
