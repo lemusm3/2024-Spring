@@ -13,6 +13,11 @@ Four types of Asynchronous code:
 
 */
 
+/**  
+ * @typedef {import('../client/src/model/transportTypes').DataEnvelope<null> } ErrorDataEnvelope
+ * */
+
+
 const app = express();
 const PORT = 3000;
 
@@ -26,6 +31,16 @@ app
   .use('/api/v1/users', users)
 
 // Error handling
+app.use((err, req, res, next) => {
+  console.error(err);
+  /** @type {ErrorDataEnvelope } */
+  const results = { 
+    isSuccess: false,
+    message: err.message || 'Internal Server Error',
+    data: null,
+   };
+  res.status(500).send(results);
+})
 
 
 app.listen(PORT, () => {
