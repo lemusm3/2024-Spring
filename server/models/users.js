@@ -4,17 +4,15 @@ const fs = require('fs/promises');
 
 const fileName = __dirname + '/../data/users.json';
 
-/** @type { { items: User[] } } */
-let data //= require('../data/users.json');
+/** @type { Promise< { items: User[] } > } */
+const dataP = fs
+        .access(fileName, fs.constants.F_OK)
+        .then(() => fs.readFile(fileName, 'utf8'))
+        .then(content => JSON.parse(content))
 
-fs
-    .access(fileName, fs.constants.F_OK)
-    .then(()  => fs.readFile(fileName, 'utf8'))
-    .then(content => {
-        data = JSON.parse(content);
-    }).catch(err => { console.error(err); });
 
-function save() {
+async function save() {
+    const data = await dataP;
     return fs.writeFile(fileName, JSON.stringify(data, null, 2));
 }
 
@@ -23,9 +21,10 @@ function save() {
  * */
 
 /**
- * @returns {User[]}
+ * @returns {Promise<User[]>}
  * */
-function getAll() {
+async function getAll() {
+    const data = await dataP;
     return data.items.map(x=> ({
         ...x, password: undefined, bank: undefined, ssn: undefined,
     }))
@@ -33,18 +32,19 @@ function getAll() {
 
 /**
  * @param {number} id
- * @returns {User}
+ * @returns {Promise<User>}
  * */
-function get(id) {
+async function get(id) {
+    const data = await dataP;
     return data.items.find(item => item.id == id);
 }
 
 /**
  * @param {string} q
- * @returns {User[]}
+ * @returns {Promise<User[]>}
  * */
-function search(q) {
-    return getAll().filter(item => 
+async function search(q) {
+    return (await getAll()).filter(item => 
         new RegExp(q, 'i').test(item.firstName) ||
         new RegExp(q, 'i').test(item.lastName) ||
         new RegExp(q, 'i').test(item.email) );
@@ -52,19 +52,16 @@ function search(q) {
 
 /**
  * @param {User} user
- * @returns {User}
+ * @returns {Promise<User>}
  * */
 async function add(user) {
+    const data = await dataP;
     user.id = data.items.length + 1;
     data.items.push(user);
     console.log("2: About to save");
     
-    try {
-        await save()
-        console.log("3: Saved")
-    } catch (error) {
-       console.error(error);
-    }
+    await save()        
+    console.log("3: Saved")
 
     console.log("4: About to return user");
     return user;
@@ -72,16 +69,17 @@ async function add(user) {
 
 /**
  * @param {User} user
- * @returns {User}
+ * @returns {Promise<User>}
  * */
-function update(user) {
+async function update(user) {
+    const data = await dataP;
     const index = data.items.findIndex(item => item.id == user.id);
     if (index >= 0) {
         data.items[index] = {
             ...data.items[index],
             ...user
         };
-        save().catch(console.error);
+        await save()
         return user;
     }
     return null;
@@ -89,13 +87,14 @@ function update(user) {
 
 /**
  * @param {number} id
- * @returns {User | null}
+ * @returns {Promise<User | null>}
  * */
-function remove(id) {
+async function remove(id) {
+    const data = await dataP;
     const index = data.items.findIndex(item => item.id == id);
     if (index >= 0) {
         const deleted = data.items.splice(index, 1);
-        save().catch(console.error);
+        await save()
         return deleted[0];
     }
     return null;
