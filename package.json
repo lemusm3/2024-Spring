@@ -1,17 +1,4 @@
 {
-<<<<<<< HEAD
-  "name": "github",
-  "version": "1.0.0",
-  "description": "Create another repo",
-  "author": "",
-  "license": "ISC",
-  "scripts": {
-  "start": "node server/index.js"
-  }, 
-"dependencies": {
-  "express": "4.18.2"
-}
-=======
   "name": "2024-spring",
   "version": "1.0.0",
   "description": "- Create another repo",
@@ -29,5 +16,4 @@
     "nodemon": "^3.0.3"
   }
 
->>>>>>> a296a7f (Add package.json with initial dependencies and scripts)
 }
