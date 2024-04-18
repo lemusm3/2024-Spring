@@ -1,8 +1,6 @@
-<<<<<<< HEAD
-console.log("Hello World")
-=======
 const express = require('express');
 const users = require('./controllers/users');
+const products = require('./controllers/products');
 /* B"H
 
 Four types of Asynchronous code:
@@ -23,12 +21,22 @@ const PORT = 3000;
 
 app
   .use(express.json())
+  .use((req, res, next) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', '*');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+
+    next();
+  })
+
 
 app
   .get('/', (req, res) => {
     res.send('Hello New Paltz!')
   })
   .use('/api/v1/users', users)
+  .use('/api/v1/products', products)
 
 // Error handling
 app.use((err, req, res, next) => {
@@ -45,13 +53,4 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`App listening at http://localhost:${PORT}`)
-<<<<<<< HEAD
-<<<<<<< HEAD
 });
->>>>>>> efbb3a7 (Add server/index.js file with basic Express setup)
-=======
-});
->>>>>>> 96fc89f (Starting Express)
-=======
-});
->>>>>>> dfc1452 (Refactor user controller and model)
