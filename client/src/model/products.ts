@@ -1,6 +1,8 @@
-import products from '@/data/products.json';
+import { api } from "@/viewModel/session"
+import type { ObjectId } from "mongodb";
 
 export interface Product {
+    _id: ObjectId; // MongoDB ID
     id: number;
     title: string;
     description: string;
@@ -14,6 +16,6 @@ export interface Product {
     images: string[];
 }
 
-export function getProducts(): Product[] {
-    return products.items;
+export function getProducts() {
+    return api<Product[]>("products");
 }
